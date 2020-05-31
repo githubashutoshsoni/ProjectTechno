@@ -23,8 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private static final String TAG = "MainActivity";
-    TaskPresenter taskPresenter;
-    TaskFragment taskFragment;
+
     SettingsFragment settingsFragment;
     public static final String SETTINGS_TAG = "SETTINGS";
     public static final String TASK_TAG = "TASK";
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 if (tab.getText().toString().equals("Settings")) {
 
 
-//                    remove all fragments from the stack..
                     startSettingsFragment();
 
                 } else {
@@ -103,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
     void startTaskFragment() {
         ActivityUtils.removeALlFragments(fm);
         onTaskTab = true;
-        taskFragment = new TaskFragment();
+        TaskFragment taskFragment = new TaskFragment();
         ActivityUtils.addFragmentToActivity(fm, taskFragment, R.id.container, TASK_TAG);
-        taskPresenter = new TaskPresenter(
+        new TaskPresenter(
                 Injection.getTaskRepository(MainActivity.this),
                 taskFragment);
     }

@@ -21,13 +21,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.notesjava.db.source.TaskDataSource;
+
 import javax.annotation.Nonnull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-
+/**
+ * Helper method to perform fragment transaction activities
+ */
 public class ActivityUtils {
-
 
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
                                              @NonNull Fragment fragment, int frameId, String TAG) {
@@ -39,7 +42,7 @@ public class ActivityUtils {
     }
 
 
-    public static void removeALlFragments(@Nonnull FragmentManager fragmentManager){
+    public static void removeALlFragments(@Nonnull FragmentManager fragmentManager) {
         for (Fragment fragment : fragmentManager.getFragments()) {
 
             if (fragment != null) {

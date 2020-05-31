@@ -10,6 +10,12 @@ import com.example.notesjava.db.source.local.DataSource.TaskLocalDataSource;
 import com.example.notesjava.db.source.local.TaskDao;
 import com.example.notesjava.db.source.remote.TaskRemoteDataSource;
 
+/*
+ *
+ * Basic Injection that provides instances of repository and data source to fragments hosting
+ *
+ *
+ * */
 public class Injection {
 
 
@@ -28,7 +34,7 @@ public class Injection {
     public static SettingLocalDataSource getLocalDataSource(Context context) {
         SettingsDao settingsDao = AppDatabase.getInstance(context).settingsDao();
         AppExecutors appExecutors = new AppExecutors();
-        SettingLocalDataSource localDataSource = new SettingLocalDataSource(appExecutors, settingsDao);
+        SettingLocalDataSource localDataSource = SettingLocalDataSource.newInstance(appExecutors, settingsDao);
         return localDataSource;
 
     }

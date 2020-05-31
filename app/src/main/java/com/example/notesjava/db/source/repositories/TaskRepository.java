@@ -19,7 +19,7 @@ public class TaskRepository implements TaskDataSource {
 
     private final TaskDataSource remoteDataSource;
 
-
+    //todo create a cacheTask that will keep sync of local data source and remote data source
     Map<String, Task> mCachedTask;
 
     boolean mCacheIsDirty;
@@ -29,6 +29,13 @@ public class TaskRepository implements TaskDataSource {
         this.remoteDataSource = remoteDataSource;
     }
 
+    /**
+     * Returns the single instance of this class, creating it if necessary.
+     *
+     * @param remoteDataSource the backend data source
+     * @param localDataSource  the device storage data source
+     * @return the {@link TaskRepository} instance
+     */
     public static TaskRepository getInstance(TaskDataSource localDataSource, TaskDataSource remoteDataSource) {
 
         if (INSTANCE == null) {
@@ -45,40 +52,33 @@ public class TaskRepository implements TaskDataSource {
         INSTANCE = null;
     }
 
+    /**
+     * Note: {@link LoadTaskCallBack#onDataFailed()} is called when it fails to fetch the data from the database
+     */
     @Override
     public void getTasks(final LoadTaskCallBack callBack) {
 
-//        if (mCachedTask != null && !mCacheIsDirty) {
-//            callBack.onTaskLoaded(new ArrayList<>(mCachedTask.values()));
-//            return;
-//        }
-//        mCacheIsDirty
-//        if (false) {
-//            getTasksFromRemote(callBack);
-//        } else {
 
+        localDataSource.getTasks(new LoadTaskCallBack() {
+            @Override
+            public void onTaskLoaded(List<Task> tasks) {
 
-            localDataSource.getTasks(new LoadTaskCallBack() {
-                @Override
-                public void onTaskLoaded(List<Task> tasks) {
+                refreshCache(tasks);
+                callBack.onTaskLoaded(new ArrayList<Task>(mCachedTask.values()));
 
-                    refreshCache(tasks);
-                    callBack.onTaskLoaded(new ArrayList<Task>(mCachedTask.values()));
+            }
 
-                }
+            @Override
+            public void onDataFailed() {
 
-                @Override
-                public void onDataFailed() {
+                callBack.onDataFailed();
 
-                    callBack.onDataFailed();
-
-                }
-            });
-//        }
+            }
+        });
 
     }
 
-
+    //todo get tasks from remote
     void getTasksFromRemote(final LoadTaskCallBack callBack) {
 
         remoteDataSource.getTasks(new LoadTaskCallBack() {
