@@ -27,15 +27,15 @@ public class Task {
         return mId;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getmDescription() {
+    public String getDescription() {
         return mDescription;
     }
 
-    public boolean ismCompleted() {
+    public boolean isCompleted() {
         return mCompleted;
     }
 

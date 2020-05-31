@@ -1,6 +1,7 @@
-package com.example.notesjava.db.source;
+package com.example.notesjava.db.source.repositories;
 
 import com.example.notesjava.db.Task;
+import com.example.notesjava.db.source.TaskDataSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,14 +48,16 @@ public class TaskRepository implements TaskDataSource {
     @Override
     public void getTasks(final LoadTaskCallBack callBack) {
 
-        if (mCachedTask != null && !mCacheIsDirty) {
-            callBack.onTaskLoaded(new ArrayList<>(mCachedTask.values()));
-            return;
-        }
+//        if (mCachedTask != null && !mCacheIsDirty) {
+//            callBack.onTaskLoaded(new ArrayList<>(mCachedTask.values()));
+//            return;
+//        }
+//        mCacheIsDirty
+//        if (false) {
+//            getTasksFromRemote(callBack);
+//        } else {
 
-        if (mCacheIsDirty) {
-            getTasksFromRemote(callBack);
-        } else {
+
             localDataSource.getTasks(new LoadTaskCallBack() {
                 @Override
                 public void onTaskLoaded(List<Task> tasks) {
@@ -71,7 +74,7 @@ public class TaskRepository implements TaskDataSource {
 
                 }
             });
-        }
+//        }
 
     }
 
@@ -149,12 +152,21 @@ public class TaskRepository implements TaskDataSource {
     @Override
     public void activeTask(Task task) {
 
+
+        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getmId(), false);
         localDataSource.activeTask(task);
+//        remoteDataSource.activeTask(task);
+        mCachedTask.put(task.getmId(), completedTask);
+
     }
 
     @Override
     public void completeTask(Task task) {
+
         localDataSource.completeTask(task);
+        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getmId(), true);
+        mCachedTask.put(task.getmId(), completedTask);
+
     }
 
     @Override
@@ -169,6 +181,7 @@ public class TaskRepository implements TaskDataSource {
 
     @Override
     public void deleteAllTasks() {
+        mCachedTask.clear();
         localDataSource.deleteAllTasks();
     }
 }

@@ -36,24 +36,21 @@ public class TaskLocalDataSource implements TaskDataSource {
     @Override
     public void getTasks(final LoadTaskCallBack callBack) {
 
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                final List<Task> tasks = taskDao.getAllTasks();
 
+        appExecutors.diskIO().execute(() -> {
+            final List<Task> tasks = taskDao.getAllTasks();
 
-                appExecutors.mainThread().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        //the task list is empty and can not be fetched...
-                        if (tasks.isEmpty())
-                            callBack.onDataFailed();
-
-                        callBack.onTaskLoaded(tasks);
-                    }
+            try {
+                appExecutors.mainThread().execute(() -> {
+                    callBack.onTaskLoaded(tasks);
                 });
+            } catch (Exception e) {
+
+                callBack.onDataFailed();
 
             }
+
+
         });
 
 
@@ -62,23 +59,15 @@ public class TaskLocalDataSource implements TaskDataSource {
     @Override
     public void getTask(final String taskId, final GetTaskCallBack callBack) {
 
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
+        appExecutors.diskIO().execute(() -> {
 
-                final Task task = taskDao.getTask(taskId);
+            final Task task = taskDao.getTask(taskId);
 
-                if (task != null)
-                    appExecutors.mainThread().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            callBack.onTaskLoaded(task);
-                        }
-                    });
-                else
-                    callBack.onDataFailed();
+            if (task != null)
+                appExecutors.mainThread().execute(() -> callBack.onTaskLoaded(task));
+            else
+                callBack.onDataFailed();
 
-            }
         });
 
     }

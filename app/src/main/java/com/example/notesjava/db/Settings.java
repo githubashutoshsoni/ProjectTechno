@@ -1,7 +1,9 @@
 package com.example.notesjava.db;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
@@ -11,13 +13,13 @@ public class Settings {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
-    int mId;
+    public int mId;
     @ColumnInfo
-    int mBrightNess;
+    public int mBrightNess;
     @ColumnInfo
-    String mWifi;
+    public String mWifi;
     @ColumnInfo
-    boolean mIsFlashOn;
+    public boolean mIsFlashOn;
 
     @Override
     public boolean equals(Object o) {
@@ -35,6 +37,17 @@ public class Settings {
         return Objects.hash(mId, mBrightNess, mWifi, mIsFlashOn);
     }
 
+    @Ignore
+    public Settings(int mBrightNess, String mWifi, boolean mIsFlashOn) {
+
+//        keep 1 because only on row is all we need to have in this table
+        this.mId = 1;
+        this.mBrightNess = mBrightNess;
+        this.mWifi = mWifi;
+        this.mIsFlashOn = mIsFlashOn;
+    }
+
+
     public Settings(int mId, int mBrightNess, String mWifi, boolean mIsFlashOn) {
         this.mId = mId;
         this.mBrightNess = mBrightNess;
@@ -46,15 +59,15 @@ public class Settings {
         return mId;
     }
 
-    public int getmBrightNess() {
+    public int getBrightNess() {
         return mBrightNess;
     }
 
-    public String getmWifi() {
+    public String getWifi() {
         return mWifi;
     }
 
-    public boolean ismIsFlashOn() {
+    public boolean isIsFlashOn() {
         return mIsFlashOn;
     }
 }

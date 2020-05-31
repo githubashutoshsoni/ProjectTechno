@@ -3,6 +3,7 @@ package com.example.notesjava.task;
 import androidx.annotation.NonNull;
 
 import com.example.notesjava.BasePresenter;
+import com.example.notesjava.BaseView;
 import com.example.notesjava.db.Task;
 
 import java.util.List;
@@ -10,6 +11,9 @@ import java.util.List;
 public interface TaskContract {
 
     interface Presenter extends BasePresenter {
+
+
+        void result(int requestCode, int resultCode);
 
         void loadTask(boolean forceUpdate);
 
@@ -23,13 +27,17 @@ public interface TaskContract {
 
         void setFiltering();
 
+        void deleteCompletedTasks();
+
+        void deleteAllTasks();
+
     }
 
-    interface Views {
+    interface Views extends BaseView<Presenter> {
 
         void setLoadingIndicator(boolean isActive);
 
-        void getList(List<Task> list);
+        void showTasks(List<Task> list);
 
         void showActiveFilterLabel();
 
@@ -48,6 +56,8 @@ public interface TaskContract {
         void showAddTask();
 
         void showTaskUi(String taskId);
+
+        void deleteAllSuccessfully();
 
 
     }

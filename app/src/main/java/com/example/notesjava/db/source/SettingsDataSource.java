@@ -1,18 +1,23 @@
 package com.example.notesjava.db.source;
 
+import com.example.notesjava.db.Settings;
+
 public interface SettingsDataSource {
 
 
-    void getBrightness();
+    interface ConfigurationCallBack {
 
-    void setBrightness();
+        void getConfigurationDetails(int brightness, boolean torch, String wifiName);
 
-    void getWifiName();
+    }
 
-    void setWifiName();
 
-    void getTorchState();
+    void setWifiName(String wifiName);
 
-    void setTorchState();
+    void setTorchState(boolean state);
+
+    void setBrightness(long brightness);
+
+    void getConfigurations(ConfigurationCallBack callBack);
 
 }

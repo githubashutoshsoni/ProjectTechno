@@ -18,7 +18,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
 
-
+    public abstract SettingsDao settingsDao();
 
     private static final Object sLock = new Object();
 
