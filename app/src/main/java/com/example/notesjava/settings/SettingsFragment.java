@@ -100,7 +100,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.Views
 
     @Override
     public void wifi(String wifiNameConnected) {
-        binding.selectWifi.setText(wifiNameConnected);
+        binding.selectWifi.setText("Connected to " + wifiNameConnected);
     }
 
     @Override
