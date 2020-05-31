@@ -11,6 +11,9 @@ import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * TaskRepository that will access both the server and local database
+ */
 public class TaskRepository implements TaskDataSource {
 
     private static TaskRepository INSTANCE = null;
@@ -19,9 +22,13 @@ public class TaskRepository implements TaskDataSource {
 
     private final TaskDataSource remoteDataSource;
 
+    /**
+     * mCachedTasks is used to sync between local and remote data source.
+     * It is still Work in progress.
+     * For the time being everything is fetched from the local database
+     */
     //todo create a cacheTask that will keep sync of local data source and remote data source
     Map<String, Task> mCachedTask;
-
     boolean mCacheIsDirty;
 
     public TaskRepository(TaskDataSource localDataSource, TaskDataSource remoteDataSource) {

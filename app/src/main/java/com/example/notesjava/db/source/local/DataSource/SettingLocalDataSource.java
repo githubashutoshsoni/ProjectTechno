@@ -9,6 +9,9 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * A local database to save user's configuration and load it quickly when the user opens the tab
+ */
 public class SettingLocalDataSource implements SettingsDataSource {
 
 
@@ -59,6 +62,11 @@ public class SettingLocalDataSource implements SettingsDataSource {
         appExecutors.diskIO().execute(() -> settingsDao.updateBrightness(brightness));
     }
 
+    /**
+     * it will insert a row if there is no table exists.
+     *
+     * @param callBack will be called when there are changes in the database
+     */
     @Override
     public void getConfigurations(ConfigurationCallBack callBack) {
 
@@ -66,7 +74,6 @@ public class SettingLocalDataSource implements SettingsDataSource {
 
             List<Settings> settingsList = settingsDao.getAllSettings();
             Settings settings;
-//                if the list is empty initialize it with some default value and put inside the table..
             if (settingsList.isEmpty()) {
                 settings = new Settings(100, "Jai Shree Ram", false);
                 settingsDao.insertConfiguration(settings);

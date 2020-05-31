@@ -7,6 +7,9 @@ import com.example.notesjava.util.AppExecutors;
 
 import java.util.List;
 
+/**
+ * A local database to store and retrieve tasks from the users
+ */
 public class TaskLocalDataSource implements TaskDataSource {
 
 
@@ -80,23 +83,13 @@ public class TaskLocalDataSource implements TaskDataSource {
     @Override
     public void saveTask(final Task task) {
 
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                taskDao.insert(task);
-            }
-        });
+        appExecutors.diskIO().execute(() -> taskDao.insert(task));
 
     }
 
     @Override
     public void activeTask(final Task task) {
-        Runnable activateRunnable = new Runnable() {
-            @Override
-            public void run() {
-                taskDao.updateCompleted(task.getmId(), false);
-            }
-        };
+        Runnable activateRunnable = () -> taskDao.updateCompleted(task.getmId(), false);
         appExecutors.diskIO().execute(activateRunnable);
 
     }
@@ -104,12 +97,7 @@ public class TaskLocalDataSource implements TaskDataSource {
     @Override
     public void completeTask(final Task task) {
 
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                taskDao.updateCompleted(task.getmId(), true);
-            }
-        });
+        appExecutors.diskIO().execute(() -> taskDao.updateCompleted(task.getmId(), true));
 
     }
 
@@ -117,31 +105,19 @@ public class TaskLocalDataSource implements TaskDataSource {
     public void completeTask(final String taskId) {
 
 
-//       no need remote does it
-
     }
 
     @Override
     public void clearAllCompletedTasks() {
 
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                taskDao.deleteCompleted();
-            }
-        });
+        appExecutors.diskIO().execute(() -> taskDao.deleteCompleted());
 
     }
 
     @Override
     public void deleteAllTasks() {
 
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                taskDao.deleteTasks();
-            }
-        });
+        appExecutors.diskIO().execute(() -> taskDao.deleteTasks());
 
     }
 }

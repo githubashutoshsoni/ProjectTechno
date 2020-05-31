@@ -27,8 +27,6 @@ public interface TaskDao {
     @Query("select * from task where mId=:task")
     Task getTask(String task);
 
-    @Update
-    int updateTask(Task task);
 
     //update tasks if completed
     @Query("update task set completed= :isCompleted where mId=:taskId ")
