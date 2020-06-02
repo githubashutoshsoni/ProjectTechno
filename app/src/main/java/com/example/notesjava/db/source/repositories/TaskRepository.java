@@ -170,10 +170,9 @@ public class TaskRepository implements TaskDataSource {
     @Override
     public void completeTask(Task task) {
 
-        localDataSource.completeTask(task);
-        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getmId(), true);
+        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getmId());
+        localDataSource.completeTask(completedTask);
         mCachedTask.put(task.getmId(), completedTask);
-
     }
 
     @Override

@@ -55,7 +55,7 @@ public class Task {
      */
     @Ignore
     public Task(@Nullable String title, @Nullable String description, @NonNull String id) {
-        this(title, description, id, false);
+        this(title, description, id, true);
     }
 
     /**

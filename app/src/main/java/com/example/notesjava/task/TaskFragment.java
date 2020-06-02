@@ -247,9 +247,9 @@ public class TaskFragment extends Fragment implements TaskContract.Views {
 
             binding.completed.setOnClickListener(v -> {
                 if (task.isCompleted()) {
-                    taskOnClickListener.onCompleteTask(task);
-                } else {
                     taskOnClickListener.onActiveTaskClick(task);
+                } else {
+                    taskOnClickListener.onCompleteTask(task);
                 }
             });
 

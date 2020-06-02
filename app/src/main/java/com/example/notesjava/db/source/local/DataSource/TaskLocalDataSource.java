@@ -97,7 +97,7 @@ public class TaskLocalDataSource implements TaskDataSource {
     @Override
     public void completeTask(final Task task) {
 
-        appExecutors.diskIO().execute(() -> taskDao.updateCompleted(task.getmId(), true));
+        appExecutors.diskIO().execute(() -> taskDao.updateTask(task));
 
     }
 
